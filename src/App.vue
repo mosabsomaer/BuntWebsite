@@ -54,19 +54,5 @@ body {
 
 
 
-.my-custom-dropzone {
-  flex-grow: 1; /* Make the dropzone take up all the available space */
-  background-color: #f0f6ff;
-  border-radius: 12px;
-  padding: 21%;
-  text-align: center;
-  height: 150px;
-}
-
-/* DropZone message styles */
-.my-custom-dropzone-message {
-  font-size: 14px;
-  color: #363861;
-}
 
 </style>

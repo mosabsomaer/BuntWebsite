@@ -34,12 +34,12 @@
       ]"
     />
   </div>
-  <p>Paste <a href="#" @click.prevent="openImageURLInput">URL</a> image link</p>
+  <p class="middle-align">Paste <a href="#" @click.prevent="openImageURLInput">URL</a> image link</p>
   <button @click="triggerUpload">Upload Files</button>
 
   <div v-if="showModal" class="modal">
+    <span class="close-button" @click="closeModal">&times;</span>
     <div class="modal-content">
-      <span class="close-button" @click="closeModal">&times;</span>
       <input type="text" v-model="imageUrl" placeholder="Enter image URL" />
       <button @click="handleImageUrl">Submit</button>
     </div>
@@ -109,29 +109,42 @@ export default defineComponent({
   flex-grow: 1; /* Make the dropzone take up all the available space */
   background-color: #f0f6ff;
   border-radius: 12px;
-  padding: 21%;
   text-align: center;
-  height: 150px;
+  height: 300px;
 }
 
 /* DropZone message styles */
 .my-custom-dropzone-message {
-  font-size: 14px;
+  font-size: 25px;
   color: #363861;
+  margin-top: 60px;
+  
 }
-
+.my-custom-dropzone-item{
+  color:#4d5dff;
+ margin:4px;
+ align-items: center;
+ justify-content: center;
+   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.my-custom-dropzone-details{
+color:#4d5dff;
+}
 .content-wrapper {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto; /* Center the content wrapper horizontally */
+  margin: 20px auto; 
+  overflow: hidden; 
   width: clamp(
-    200px,
+    400px,
     80%,
-    300px
+    600px
   ); /* Minimum width of 200px, maximum width of 300px, or 80% of the available width */
-  height: 150px; /* Fixed height of 150px */
+  height: 300px; /* Fixed height of 150px */
   border-radius: 10px;
 }
 
@@ -149,57 +162,53 @@ export default defineComponent({
 
 .dropzone-icon {
   position: absolute;
-  width: 40;
-  height: 40;
+  width: 60px;
+  height: 60px;
   pointer-events: none;
 }
 
 .dropzone-icon img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  margin-bottom: 55px;
+  
 }
 
-.hover-div {
-  width: 500px;
-  position: relative;
+
+
+.middle-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: fixed;
   z-index: 1;
-
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 30%;
   border-radius: 10px;
 }
 
 .close-button {
-  color: #aaa;
-  float: right;
+  align-self: flex-end;
+  margin: 10px;
   font-size: 28px;
-  font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-  color: black;
-  text-decoration: none;
   cursor: pointer;
 }
 </style>
