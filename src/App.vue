@@ -4,14 +4,18 @@
     <img src="@/assets/bunt_logo.png" alt="Logo" class="logo" />
     <span class="app-name">Bunt</span>
   </div>
-  <HomePageContent />
-   
+  <router-link :to="{ name:'home' }">Home</router-link>
+  <router-link :to="{name:'FilesPages'}">Files</router-link>
+  <router-view/>
+  
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
 
 import HomePageContent from "./views/HomePageContent.vue";
+
+
 
 export default defineComponent({
   components: {
@@ -25,6 +29,7 @@ HomePageContent
 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
 .top-bar {
   background-color: #FFD84D;
   display: flex;

@@ -11,7 +11,7 @@
       :dropzoneDetailsClassName="customDropzoneDetailsClass"
       :maxFiles="Number(10)"
       url="http://localhost:5173/"
-      :uploadOnDrop="false"
+      :uploadOnDrop="true"
       :multipleUpload="true"
       :parallelUpload="3"
       :retryOnError="true"
@@ -32,6 +32,9 @@
         'xlsx',
         'txt',
       ]"
+      @addedFile="onFileAdd"
+      @removedFile="onFileRemove"
+      @uploaded="onFilesUploaded"
     />
   </div>
   <p class="middle-align">Paste <a href="#" @click.prevent="openImageURLInput">URL</a> image link</p>
@@ -78,7 +81,7 @@ to us!</h2>
 <script>
 import { defineComponent, ref } from "vue";
 import { DropZone } from "dropzone-vue";
-
+import { useFilesStore } from '@/stores/files';
 export default defineComponent({
   components: {
     DropZone,
@@ -93,6 +96,7 @@ export default defineComponent({
     const showModal = ref(false);
     const imageUrl = ref("");
     const activeFaqIndex = ref(-1);
+    const filesStore = useFilesStore();
     const faqs = [
       {
         question: "What is the price to print 1 paper?",
@@ -111,6 +115,20 @@ export default defineComponent({
         answer: "You can upload up to 10 files at a time.",
       },
     ];
+    const onFileAdd = ({ id, file }) => {
+      filesStore.addFile({ id, name: file.name, size: file.size });
+    };
+
+    const onFileRemove = ({ id }) => {
+      filesStore.removeFile(id);
+    };
+
+    const onFilesUploaded = (items) => {
+      items.forEach(({ file }) => {
+        filesStore.uploadFile({ name: file.name, size: file.size });
+      });
+    };
+
     function triggerUpload() {
       if (dropzoneRef.value) {
         dropzoneRef.value.processQueue();
@@ -145,15 +163,22 @@ export default defineComponent({
       customDropzoneItemClass,
       customDropzoneDetailsClass,
       dropzoneRef,
+      
       triggerUpload,
+
       openImageURLInput,
       showModal,
       imageUrl,
       closeModal,
       handleImageUrl,
+
       faqs,
       activeFaqIndex,
       toggleFaqAnswer,
+
+      onFileAdd,
+      onFileRemove,
+      onFilesUploaded,
     };
   },
 });
