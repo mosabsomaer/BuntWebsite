@@ -7,7 +7,11 @@ export const useFilesStore = defineStore('files', {
   }),
   actions: {
     addFile(file) {
-      this.files.push({ ...file, colorMode: 'RGB', copies: 1, price: '0d' });
+      if (this.files.length < 10) {
+        this.files.push({ ...file, colorMode: 'RGB', copies: 1, price: '0d' });
+      } else {
+        console.error('Maximum file limit reached (10 files).');
+      }
     },
     removeFile(id) {
       this.files = this.files.filter(file => file.id !== id);
@@ -32,3 +36,14 @@ export const useFilesStore = defineStore('files', {
     },
   },
 });
+
+
+
+
+
+
+
+
+
+
+

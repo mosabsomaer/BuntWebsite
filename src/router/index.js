@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePageContent from '../views/HomePageContent.vue'
 import FilesPages from '../views/FilesPage.vue'
 import NotFound from '../views/NotFound.vue'
+import TermsOfService from '@/views/TermsOfService.vue';
+import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -14,6 +16,16 @@ const router = createRouter({
       path: '/files',
       name: 'FilesPages',
       component: FilesPages
+    },
+    {
+      path: '/terms',
+      name: 'TermsOfService',
+      component: TermsOfService
+    },
+    {
+      path: '/privacy',
+      name: 'PrivacyPolicy',
+      component: PrivacyPolicy
     },
   //redirect
   {
