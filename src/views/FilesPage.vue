@@ -19,18 +19,14 @@
             <button @click="incrementCopies(props.row.id)" class="copy-btn">+</button>
           </td>
 
-          <td v-if="props.column.field === 'price'">{{ props.row.price }}</td>
+          <td v-if="props.column.field === 'price'">{{ props.row.price }} LYD</td>
           <td v-if="props.column.field === 'actions'">
             <img src="@/assets/trash_can.svg" class="trash-icon" @click="deleteRow(props.row.id)" />
 
           </td>
         </tr>
       </template>
-      <template #selected-row-actions>
-        <button class="trash-button" @click="deleteSelectedRows">
-          <img src="@/assets/trash_can.svg" />
-        </button>
-      </template>
+
     </vue-good-table>
     <h2>Live Feed of Files</h2>
     <ul>
@@ -49,9 +45,19 @@
       </label>
     </div>
     <hr />
-    <div class="total-price">Total Price:</div>
+    <div class="total-price">Total Price: {{ totalPrice }} Dinar</div>
     <button :disabled="!agreed" @click="save" class="save-btn">Save</button>
   </div>
+  <form action="https://upload.cloudconvert.com/d660c0df-d15e-468a-9554-917e0f0f3ef1/"
+      method="POST"
+      enctype="multipart/form-data">
+    <input type="hidden" name="expires" value="1545444403">
+    <input type="hidden" name="max_file_count" value="1">
+    <input type="hidden" name="max_file_size" value="10000000000">
+    <input type="hidden" name="signature" value="d0db9b5e4ff7283xxfe0b1e3ad6x1db95c616121">
+    <input type="file" name="file">
+    <input type="submit">
+</form>
 </template>
 
 
@@ -70,42 +76,28 @@ export default {
   },
   methods: {
     save() {
-      // Logic for saving goes here
       console.log('Saved');
     },
   },
   setup() {
     const filesStore = useFilesStore();
     const files = computed(() => filesStore.files);
+    const totalPrice = computed(() => filesStore.totalPrice);
 
     const deleteRow = (id) => {
       filesStore.removeFile(id);
     };
 
-    const deleteSelectedRows = () => {
-      const selectedRows = this.$refs.table.selectedRows; // Assuming you have a ref named 'table'
-      selectedRows.forEach(row => deleteRow(row.id));
-    };
-
     const toggleColorMode = (id) => {
-      const file = files.value.find(file => file.id === id);
-      if (file) {
-        file.colorMode = !file.colorMode;
-      }
+      filesStore.toggleColorMode(id);
     };
 
     const incrementCopies = (id) => {
-      const file = files.value.find(file => file.id === id);
-      if (file) {
-        file.copies++;
-      }
+      filesStore.incrementCopies(id);
     };
 
     const decrementCopies = (id) => {
-      const file = files.value.find(file => file.id === id);
-      if (file && file.copies > 0) {
-        file.copies--;
-      }
+      filesStore.decrementCopies(id);
     };
 
     return {
@@ -137,11 +129,11 @@ export default {
           html: true,
         },
       ],
-      deleteSelectedRows,
       deleteRow,
       toggleColorMode,
       incrementCopies,
       decrementCopies,
+      totalPrice,
     };
   },
 };
@@ -167,9 +159,7 @@ export default {
   border: none;
   cursor: pointer;
   font-size: 40px;
-  /* Bigger font size */
   font-weight: bold;
-  /* Bold text */
   font-family: 'Courier New', Courier, monospace;
 }
 .copy-btn:hover {
@@ -177,9 +167,9 @@ export default {
 }
 .copies-display {
   display: inline-block;
-  width: 5px; /* Fixed width to accommodate varying number of digits */
+  width: 5px; 
   text-align: center;
-  margin: 0 5px; /* Optional: adjust margin as needed */
+  margin: 0 5px;
 }
 
 
