@@ -6,6 +6,7 @@
   </div>
   <router-link :to="{ name:'home' }">Home</router-link>
   <router-link :to="{name:'FilesPages'}">Files</router-link>
+  <router-link :to="{name:'testView'}">test page</router-link>
   <router-view/>
   
 </template>
