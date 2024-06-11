@@ -2,7 +2,11 @@
   <div>
     <DropZone
       ref="myDropzone"
-      :options="dropzoneOptions"
+      :url="dropzoneOptions.url"
+      :method="dropzoneOptions.method"
+      :headers="dropzoneOptions.headers"
+      :paramName="dropzoneOptions.paramName"
+      :autoProcessQueue="dropzoneOptions.autoProcessQueue"
       @vdropzone-success="onFileUploadSuccess"
       @vdropzone-error="onFileUploadError"
       @sending="onSending"
@@ -17,8 +21,8 @@
 
 <script>
 import axios from 'axios';
-import { defineComponent, ref } from "vue";
-import { DropZone } from "dropzone-vue";
+import { defineComponent, ref } from 'vue';
+import { DropZone } from 'dropzone-vue';
 
 export default defineComponent({
   components: {
@@ -26,10 +30,10 @@ export default defineComponent({
   },
   data() {
     return {
-      selectedFile: null,
+      jobData: null,
       response: null,
       dropzoneOptions: {
-        url: '/', // This will be updated dynamically
+        url: '/',
         method: 'POST',
         headers: {},
         paramName: 'file',
@@ -39,7 +43,7 @@ export default defineComponent({
   },
   methods: {
     async createCloudConvertJob() {
-      const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTk4NWRmNTk0YzgxYzk1OWRjZjEzMTk5Y2UwZWJkOTVkZjk0YjRlODE2NDViNDE2OTViYjM2ODk2YzkyZTg3Yzk1NzQ0ZjE3YjRlNjlmYzEiLCJpYXQiOjE3MTc5MjM5MjkuODc2Njc3LCJuYmYiOjE3MTc5MjM5MjkuODc2Njc4LCJleHAiOjQ4NzM1OTc1MjkuODcyMjg1LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.mt9HTAb6k5wuIDnaKqyegfMgBR6TLTA68bu2oBj0vrw5LAV_OasBhadcTNVqvkvAHEksAvnoS4cLDkqBxX7iRG-hXdh5viy7a8bHQjcgxTQaagHq2i3W7VTqGvwSWG0qQgL6HPwLqy0SHa_TZ_H9z4Eq0nWCJ4lB9jnOFsEM5mreAx0l84uuHS3cNAeLgRUKYQ7_7maRw4_ZwFskfb0n3OyTnJvXLF4hAQe3kUrtOFA66OkPNBag20NvO7e00jrYTJhOTjlBRLwAtfycUA567dCa-JkbS5ZRK73Oztb5Ivox_xUzDtlfYJKrrd9gRbzXlu6sgehDSMf_HyAPPq2oL21vOsVr1REkWFifWcU9t22x_rw7UL5IrKoR9KWaJMn4pQFPeSVHtzEQj2tC_WEg9UjGjSpx80GN3NBHiKjVuFy7q-YBFV6SmhYYN5joMLn5fM2sxE-ZN8s8aI16fwyusEuoU9argvSKIHPEGGuTKgyoaj1TC63vOtbQuquoergY2Ri2JC0GPCuK7fr2-JIyycGo0Cq6XbG4xpdjTUSxQr25pNKD8nwm2rSOcssxXxGKSYhVH5zXH_ZdQkLwqrfJYKr0QVHZLXSfeWYINgwd0YoWcEysqCG9Aaq0Y3Isw479Drvgwwyyg9DYWHTC4RyICLxer0AvS_CXFCl5Smqro_w';
+      const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c';
       const jobRequestBody = {
         tasks: {
           'import-1': { operation: 'import/upload' },
@@ -74,12 +78,15 @@ export default defineComponent({
     async createAndUploadJob() {
       try {
         const jobData = await this.createCloudConvertJob();
+        this.jobData = jobData;
         const importTask = jobData.tasks.find(task => task.operation === 'import/upload');
         this.dropzoneOptions.url = importTask.result.form.url;
         this.dropzoneOptions.headers = {
           ...importTask.result.form.parameters,
         };
-        this.$refs.myDropzone.processQueue();
+        this.$nextTick(() => {
+          this.$refs.myDropzone.processQueue();
+        });
       } catch (error) {
         console.error('Error creating or uploading job:', error);
       }
@@ -93,12 +100,13 @@ export default defineComponent({
     onFileUploadSuccess(file, response) {
       console.log('File uploaded successfully:', response);
       this.checkJobStatus(this.jobData.id);
+     
     },
     onFileUploadError(file, error) {
       console.error('Error uploading file:', error);
     },
     async checkJobStatus(jobId) {
-      const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOTk4NWRmNTk0YzgxYzk1OWRjZjEzMTk5Y2UwZWJkOTVkZjk0YjRlODE2NDViNDE2OTViYjM2ODk2YzkyZTg3Yzk1NzQ0ZjE3YjRlNjlmYzEiLCJpYXQiOjE3MTc5MjM5MjkuODc2Njc3LCJuYmYiOjE3MTc5MjM5MjkuODc2Njc4LCJleHAiOjQ4NzM1OTc1MjkuODcyMjg1LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.mt9HTAb6k5wuIDnaKqyegfMgBR6TLTA68bu2oBj0vrw5LAV_OasBhadcTNVqvkvAHEksAvnoS4cLDkqBxX7iRG-hXdh5viy7a8bHQjcgxTQaagHq2i3W7VTqGvwSWG0qQgL6HPwLqy0SHa_TZ_H9z4Eq0nWCJ4lB9jnOFsEM5mreAx0l84uuHS3cNAeLgRUKYQ7_7maRw4_ZwFskfb0n3OyTnJvXLF4hAQe3kUrtOFA66OkPNBag20NvO7e00jrYTJhOTjlBRLwAtfycUA567dCa-JkbS5ZRK73Oztb5Ivox_xUzDtlfYJKrrd9gRbzXlu6sgehDSMf_HyAPPq2oL21vOsVr1REkWFifWcU9t22x_rw7UL5IrKoR9KWaJMn4pQFPeSVHtzEQj2tC_WEg9UjGjSpx80GN3NBHiKjVuFy7q-YBFV6SmhYYN5joMLn5fM2sxE-ZN8s8aI16fwyusEuoU9argvSKIHPEGGuTKgyoaj1TC63vOtbQuquoergY2Ri2JC0GPCuK7fr2-JIyycGo0Cq6XbG4xpdjTUSxQr25pNKD8nwm2rSOcssxXxGKSYhVH5zXH_ZdQkLwqrfJYKr0QVHZLXSfeWYINgwd0YoWcEysqCG9Aaq0Y3Isw479Drvgwwyyg9DYWHTC4RyICLxer0AvS_CXFCl5Smqro_w';
+      const apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c';
       let jobStatus = 'waiting';
 
       while (jobStatus !== 'finished') {
@@ -139,4 +147,3 @@ export default defineComponent({
   },
 });
 </script>
-

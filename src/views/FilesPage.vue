@@ -5,11 +5,11 @@
       styleClass="vgt-table striped custom-striped-table">
       <template #table-row="props">
         <tr>
-          <td v-if="props.column.field === 'name'"><img src="@/assets/paper.svg" class="trash-icon" />{{ props.row.name
-            }}</td>
-
-          <td v-if="props.column.field === 'colorMode'" @click="toggleColorMode(props.row.id)"
-            style="border-radius:30px;">
+          <td v-if="props.column.field === 'name'">
+            <img src="@/assets/paper.svg" class="trash-icon" />
+            {{ props.row.name }}
+          </td>
+          <td v-if="props.column.field === 'colorMode'" @click="toggleColorMode(props.row.id)" style="border-radius:30px;">
             <img v-if="props.row.colorMode" src="@/assets/Colored_Paper.svg" class="trash-icon" />
             <img v-else src="@/assets/b&w_Paper.svg" class="trash-icon" />
           </td>
@@ -18,20 +18,16 @@
             <div class="copies-display">{{ props.row.copies }}</div>
             <button @click="incrementCopies(props.row.id)" class="copy-btn">+</button>
           </td>
-
           <td v-if="props.column.field === 'price'">{{ props.row.price }} LYD</td>
           <td v-if="props.column.field === 'actions'">
             <img src="@/assets/trash_can.svg" class="trash-icon" @click="deleteRow(props.row.id)" />
-
           </td>
         </tr>
       </template>
-
     </vue-good-table>
     <h2>Live Feed of Files</h2>
     <ul>
-      <li v-for="file in files" :key="file.id">{{ file.name }}{{ file.colorMode }}{{ file.copies }}</li>
-
+      <li v-for="file in files" :key="file.id">{{ file.name }} {{ file.colorMode }} {{ file.copies }}</li>
     </ul>
   </div>
   <div class="form-container">
@@ -46,19 +42,20 @@
     </div>
     <hr />
     <div class="total-price">Total Price: {{ totalPrice }} Dinar</div>
-    <button :disabled="!agreed" @click="save" class="save-btn">Save</button>
+
+    <div v-if="isSaveDisabled || !agreed" class="error-message">
+      <p v-if="!agreed">You must agree to the Terms of Service and Privacy Policy.</p>
+      <p v-if="!allFilesHaveCopies">All files must have at least one copy.</p>
+    </div>
+    <router-link
+      :class="['save-btn', { disabled: isSaveDisabled }]"
+      :to="isSaveDisabled ? '' : '/code'"
+      @click="isSaveDisabled ? $event.preventDefault() : save"
+    >Save</router-link>
+ 
   </div>
-  <form action="https://upload.cloudconvert.com/d660c0df-d15e-468a-9554-917e0f0f3ef1/"
-      method="POST"
-      enctype="multipart/form-data">
-    <input type="hidden" name="expires" value="1545444403">
-    <input type="hidden" name="max_file_count" value="1">
-    <input type="hidden" name="max_file_size" value="10000000000">
-    <input type="hidden" name="signature" value="d0db9b5e4ff7283xxfe0b1e3ad6x1db95c616121">
-    <input type="file" name="file">
-    <input type="submit">
-</form>
 </template>
+
 
 
 
@@ -66,7 +63,7 @@
 <script>
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import { useFilesStore } from '@/stores/files';
-import { computed } from 'vue';
+import { ref,computed } from 'vue';
 
 export default {
   data() {
@@ -83,7 +80,19 @@ export default {
     const filesStore = useFilesStore();
     const files = computed(() => filesStore.files);
     const totalPrice = computed(() => filesStore.totalPrice);
+    const agreed = ref(false);
 
+
+
+
+    const allFilesHaveCopies = computed(() => {
+      return files.value.every(file => file.copies > 0);
+      
+    });
+
+    const isSaveDisabled = computed(() => {
+      return !agreed.value || !allFilesHaveCopies.value;
+    });
     const deleteRow = (id) => {
       filesStore.removeFile(id);
     };
@@ -134,6 +143,9 @@ export default {
       incrementCopies,
       decrementCopies,
       totalPrice,
+      allFilesHaveCopies,
+      isSaveDisabled,
+      agreed, 
     };
   },
 };
@@ -145,9 +157,8 @@ export default {
   width: 30px;
   height: 30px;
   margin-right: 10px;
+
 }
-
-
 
 
 
@@ -222,10 +233,18 @@ hr {
   font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-decoration: none; 
+  display: inline-block; 
+  text-align: center;
 }
 
-.save-btn:disabled {
-  background-color: #ccc;
+.save-btn.disabled {
+  background-color: #949494;
   cursor: not-allowed;
+}
+.error-message {
+  color: rgb(255, 121, 121);
+  margin-top: 10px;
+text-decoration-line: underline;
 }
 </style>

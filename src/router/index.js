@@ -4,6 +4,7 @@ import FilesPages from '../views/FilesPage.vue'
 import NotFound from '../views/NotFound.vue'
 import TermsOfService from '@/views/TermsOfService.vue';
 import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
+import CodePage from '@/views/CodePage.vue';
 import testView from '@/views/testView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/test',
       name: 'testView',
       component: testView
+    },
+    {
+      path: '/code',
+      name: 'CodePage',
+      component: CodePage
     },
   //redirect
   {
