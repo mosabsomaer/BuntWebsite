@@ -1,9 +1,10 @@
 <template>
-  
-  <div class="top-bar">
-    <img src="@/assets/bunt_logo.png" alt="Logo" class="logo" />
-    <span class="app-name">Bunt</span>
-  </div>
+     <router-link :to="{ name: 'home' }" class="no-underline">
+    <div class="top-bar">
+      <img src="@/assets/bunt_logo.png" alt="Logo" class="logo" />
+      <span class="app-name">Bunt</span>
+    </div>
+  </router-link>
   <router-link :to="{ name:'home' }">Home</router-link>
   <router-link :to="{name:'FilesPages'}">Files</router-link>
   <router-link :to="{name:'testView'}">test page</router-link>
@@ -49,13 +50,17 @@ HomePageContent
   font-size: 21px;
   font-weight: 600;
   color: #807A66;
+  text-decoration: none;
+  border: none;
 }
 body {
   font-family: 'Poppins', sans-serif;
   color: #3F3F3F;
   margin: 0px;
 }
-
+.no-underline {
+  text-decoration: none;
+}
 
 
 

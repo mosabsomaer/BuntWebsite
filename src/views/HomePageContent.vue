@@ -37,9 +37,8 @@
       @uploaded="onFilesUploaded"
     />
   </div>
-  <p class="middle-align">Paste <a href="#" @click.prevent="openImageURLInput">URL</a> image link</p>
-  <button @click="triggerUpload">Upload Files</button>
-
+  <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
+  
   <div v-if="showModal" class="modal" @click="closeModal">
     <div class="modal-content" @click.stop>
       <span class="close-button" @click="closeModal">&times;</span>
@@ -129,11 +128,7 @@ export default defineComponent({
       });
     };
 
-    function triggerUpload() {
-      if (dropzoneRef.value) {
-        dropzoneRef.value.processQueue();
-      }
-    }
+
 
     function openImageURLInput() {
       showModal.value = true;
@@ -164,7 +159,7 @@ export default defineComponent({
       customDropzoneDetailsClass,
       dropzoneRef,
       
-      triggerUpload,
+     
 
       openImageURLInput,
       showModal,
