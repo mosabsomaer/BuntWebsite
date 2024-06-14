@@ -37,8 +37,9 @@
       @uploaded="onFilesUploaded"
     />
   </div>
+
+
   <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
-  
   <div v-if="showModal" class="modal" @click="closeModal">
     <div class="modal-content" @click.stop>
       <span class="close-button" @click="closeModal">&times;</span>
@@ -75,6 +76,8 @@ to us!</h2>
   </div>
 </div>
 </div>
+
+<footer>words <p>Powered by Cloud Convert</p></footer>
 </template>
 
 <script>
