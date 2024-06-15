@@ -50,14 +50,14 @@ export const useFilesStore = defineStore('files', {
     },
     calculateTotalPrice() {
       this.totalPrice = parseFloat(this.files
-        .reduce((sum, file) => sum + parseFloat(file.price) * file.copies, 0)
+        .reduce((sum, file) => sum + parseFloat(file.price) * file.copies*pageCount, 0)
         .toFixed(2));
     }
     
   },
   hydrate(state) {
     state.totalPrice = parseFloat(this.files
-      .reduce((sum, file) => sum + parseFloat(file.price)* file.copies, 0)
+      .reduce((sum, file) => sum + parseFloat(file.price)* file.copies*pageCoun, 0)
       .toFixed(2));
   },
 });
