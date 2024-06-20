@@ -9,8 +9,10 @@ export const useFilesStore = defineStore('files', {
   actions: {
     addFile(file) {
       if (this.files.length < 10) {
-        this.files.push({ ...file, colorMode: true, copies: 1, price: '2.25' });
+        const price = file.pageCount*1;
+        this.files.push({ ...file, colorMode: true, copies: 1, price });
         this.calculateTotalPrice();
+       
       } else {
         console.error('Maximum file limit reached (10 files).');
       }
@@ -31,6 +33,7 @@ export const useFilesStore = defineStore('files', {
       if (file) {
         file.copies++;
         this.calculateTotalPrice();
+        
       }
     },
     decrementCopies(id) {
@@ -45,19 +48,24 @@ export const useFilesStore = defineStore('files', {
       const file = this.files.find(file => file.id === id);
       if (file) {
         file.colorMode = !file.colorMode;
+        if(file.colorMode == true){
+          file.price=file.pageCount*1;
+        }else{
+          file.price=file.pageCount*0.5;
+        }
         this.calculateTotalPrice();
       }
     },
     calculateTotalPrice() {
       this.totalPrice = parseFloat(this.files
-        .reduce((sum, file) => sum + parseFloat(file.price) * file.copies*pageCount, 0)
+        .reduce((sum, file) => sum + parseFloat(file.price) * file.copies, 0)
         .toFixed(2));
-    }
-    
+    },
+
   },
   hydrate(state) {
     state.totalPrice = parseFloat(this.files
-      .reduce((sum, file) => sum + parseFloat(file.price)* file.copies*pageCoun, 0)
+      .reduce((sum, file) => sum + parseFloat(file.price)* file.copies, 0)
       .toFixed(2));
   },
 });

@@ -1,15 +1,33 @@
 <template>
-     <router-link :to="{ name: 'home' }" class="no-underline">
+  <router-link :to="{ name: 'home' }" class="no-underline">
     <div class="top-bar">
       <img src="@/assets/bunt_logo.png" alt="Logo" class="logo" />
       <span class="app-name">Bunt</span>
     </div>
   </router-link>
-  <router-link :to="{ name:'home' }">Home</router-link>
-  <router-link :to="{name:'FilesPages'}">Files</router-link>
-  <router-link :to="{name:'testView'}">test page</router-link>
-  <router-view/>
-  
+  <router-link :to="{ name: 'home' }">Home</router-link>
+  <router-link :to="{ name: 'FilesPages' }">Files</router-link>
+  <router-link :to="{ name: 'testView' }">test page</router-link>
+  <router-view />
+  <footer class="foot">
+    <div class="footer-content">
+      <div class="company-info">
+        <p><strong>Bunt</strong></p>
+        <p>We are a leading provider of printing services, offering reliable and efficient solutions for all your
+          printing needs.</p>
+        <p>Location: 123 Conversion Lane, Tech City</p>
+      </div>
+      <div class="footer-links">
+        <router-link to="/" class="link" @click.native="scrollToTop">Home</router-link>
+        <router-link to="/location" class="link" @click.native="scrollToTop">Our Location</router-link>
+        <router-link to="/terms" class="link" @click.native="scrollToTop">Terms of Service</router-link>
+        <router-link to="/privacy" class="link" @click.native="scrollToTop">Privacy Policy</router-link>
+      </div>
+      <div class="powered-by">
+        <p>Powered by <a href="https://cloudconvert.com" target="_blank" class="link">Cloud Convert</a></p>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -21,11 +39,17 @@ import HomePageContent from "./views/HomePageContent.vue";
 
 export default defineComponent({
   components: {
- 
-HomePageContent
+
+    HomePageContent
   },
-  name: "App",
- 
+  name: "App", 
+  
+  methods: {
+    scrollToTop() {
+      window.scrollTo({ top: 0 });
+    }
+  }
+
 });
 </script>
 
@@ -53,17 +77,62 @@ HomePageContent
   text-decoration: none;
   border: none;
 }
+
 body {
   font-family: 'Poppins', sans-serif;
   color: #3F3F3F;
   margin: 0px;
 }
+
 .no-underline {
   text-decoration: none;
 }
 
 
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4d5dff;
+  padding: 10px 35px;
+  color: white;
+  margin-top: 30vh;
+}
 
 
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+}
 
+.company-info,
+.footer-links,
+.powered-by {
+  margin: 10px 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 5px 0;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.company-info strong {
+  font-size: 1.2em;
+}
+
+.company-info p,
+.powered-by p {
+  margin: 5px 0;
+}
 </style>

@@ -25,10 +25,7 @@
         </tr>
       </template>
     </vue-good-table>
-    <h2>Live Feed of Files</h2>
-    <ul>
-      <li v-for="file in files" :key="file.id">{{ file.name }} {{ file.colorMode }} {{ file.copies }}</li>
-    </ul>
+    
   </div>
   <div class="form-container">
     <div class="terms">
@@ -54,6 +51,22 @@
     >Save</router-link>
  
   </div>
+
+
+
+
+    <!-- Section to display files -->
+    <div v-if="files.length" class="files-list">
+      <h3>Uploaded Files</h3>
+      <ul>
+        <li v-for="file in files" :key="file.id">
+          <div v-for="[key, value] in Object.entries(file)">
+            <strong>{{ key }}:</strong> {{ value }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  
 </template>
 
 

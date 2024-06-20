@@ -10,11 +10,14 @@
       :dropzoneItemClassName="customDropzoneItemClass"
       :dropzoneDetailsClassName="customDropzoneDetailsClass"
       :maxFiles="Number(10)"
+      
+
+      
       url="http://localhost:5173/"
-      :uploadOnDrop="true"
-      :multipleUpload="true"
-      :parallelUpload="3"
-      :retryOnError="true"
+      paramName="test"
+      :headers="{header1: value}"
+
+
       :acceptedFiles="[
         'pdf',
         'eps',
@@ -77,7 +80,7 @@ to us!</h2>
 </div>
 </div>
 
-<footer>words <p>Powered by Cloud Convert</p></footer>
+
 </template>
 
 <script>
@@ -183,8 +186,8 @@ export default defineComponent({
 </script>
 
 <style>
-/* Custom styles for the DropZone */
-/* Main DropZone styles */
+
+
 .my-custom-dropzone {
   flex-grow: 1; /* Make the dropzone take up all the available space */
   background-color: #f0f6ff;
@@ -219,15 +222,15 @@ color:#4d5dff;
   align-items: center;
   margin: 20px auto;
   overflow: hidden;
-  width: clamp(200px, 80%, 600px); /* Minimum width of 200px, maximum width of 600px, or 80% of the available width */
-  aspect-ratio: 4 / 3; /* Set the aspect ratio to 4:3 */
+  width: clamp(200px, 80%, 600px); 
+  aspect-ratio: 4 / 3;
   border-radius: 10px;
 }
 
 
 @media (min-width: 1200px) {
   .content-wrapper {
-    aspect-ratio: 3 / 2; /* Adjust the aspect ratio for larger screens (e.g., desktops) */
+    aspect-ratio: 3 / 2; 
   }
 }
 .content-wrapper:before {
