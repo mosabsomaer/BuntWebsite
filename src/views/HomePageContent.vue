@@ -181,7 +181,7 @@ export default defineComponent({
 
 
 
-const jobID =";"
+const jobID =""
 const urld="http://localhost:5173/home";
 const pramnamed="test";
 
@@ -268,9 +268,11 @@ const pramnamed="test";
 
 
 
-        
-        urld= jobResponse.data.data.find((task) => task.name === "import-1").result.form.url;
-        pramnamed=jobResponse.data.data.find((task) => task.name === "import-1").result.form.parameters;
+        //////Look i made changes added value but didnt test it 
+        //DD
+        //DDD
+        urld.value= jobResponse.data.data.find((task) => task.name === "import-1").result.form.url;
+        pramnamed.value=jobResponse.data.data.find((task) => task.name === "import-1").result.form.parameters;
 
        
 
