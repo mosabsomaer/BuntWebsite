@@ -1,21 +1,23 @@
 <template>
+      <p>url: {{ urld,jobID,pramnamed }}</p>
   <div class="content-wrapper">
     <div class="dropzone-icon">
       <img src="@/assets/dropzone_icon.svg" alt="Dropzone Icon" />
     </div>
+
     <DropZone
-      ref="dropzoneRef"
+     
       :dropzoneClassName="customDropzoneClass"
       :dropzoneMessageClassName="customDropzoneMessageClass"
       :dropzoneItemClassName="customDropzoneItemClass"
       :dropzoneDetailsClassName="customDropzoneDetailsClass"
       :maxFiles="Number(10)"
       
-
-      
-      url="http://localhost:5173/"
-      paramName="test"
-      :headers="{header1: value}"
+      ref="dropzoneRef"
+      :uploadOnDrop="false"
+      :url= urld
+      :paramName=pramnamed
+      :headers="{'Authorization' : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c'}"
 
 
       :acceptedFiles="[
@@ -40,7 +42,7 @@
       @uploaded="onFilesUploaded"
     />
   </div>
-
+<button @click="UploadDocument">upload document</button>
 
   <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
   <div v-if="showModal" class="modal" @click="closeModal">
@@ -84,9 +86,16 @@ to us!</h2>
 </template>
 
 <script>
+import axios from "axios";
 import { defineComponent, ref } from "vue";
 import { DropZone } from "dropzone-vue";
+//local data storage
 import { useFilesStore } from '@/stores/files';
+//api logic
+// import {taskss} from "@/API/cloudconvert";
+//css code
+import '@/assets/styles/homepage.css';
+
 export default defineComponent({
   components: {
     DropZone,
@@ -120,6 +129,7 @@ export default defineComponent({
         answer: "You can upload up to 10 files at a time.",
       },
     ];
+ 
     const onFileAdd = ({ id, file }) => {
       filesStore.addFile({ id, name: file.name, size: file.size });
     };
@@ -144,13 +154,6 @@ export default defineComponent({
       showModal.value = false;
       imageUrl.value = "";
     }
-
-    function handleImageUrl() {
-      // Do something with the image URL, e.g., display the image
-      console.log("Image URL:", imageUrl.value);
-      closeModal();
-    }
-
     function toggleFaqAnswer(index) {
       if (activeFaqIndex.value === index) {
         activeFaqIndex.value = -1;
@@ -158,265 +161,185 @@ export default defineComponent({
         activeFaqIndex.value = index;
       }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+const jobID =";"
+const urld="http://localhost:5173/home";
+const pramnamed="test";
+
+
+    async function UploadDocument(){
+      await handleImage()
+      dropzoneRef.value.processQueue();
+    }
+
+
+
+    const message = ref("");
+    async function waitForJobCompletion(jobId) {
+      while (true) {
+        const jobResponse = await axios.get(
+          `https://api.cloudconvert.com/v2/jobs/${jobId}`,
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
+            },
+          }
+        );
+
+        console.log("Job Response:", jobResponse.data);
+
+        const jobStatus = jobResponse.data.data.status;
+        const tasks = jobResponse.data.data.tasks;
+
+
+
+        if (jobStatus === "finished") {
+          return tasks;
+        } else if (jobStatus === "error") {
+          throw new Error("Job failed");
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds before polling again
+      }
+    }
+
+
+
+    async function handleImage() {
+      
+      try {
+        // Step 1: Create a job
+        const jobResponse = await axios.post(
+          "https://api.cloudconvert.com/v2/jobs",
+          {
+            tasks: {
+              "import-1": {
+                operation: "import/upload",
+              },
+              "task-1": {
+                operation: "convert",
+                input: ["import-1"],
+                output_format: "pdf",
+              }, 
+              "task-2": {
+                operation: "metadata",
+                input: ["task-1"],
+              },
+              "export-1": {
+                operation: "export/url",
+                input: ["task-1"],
+                inline: false,
+                archive_multiple_files: false,
+              },
+            },
+            tag: "jobbuilder",
+          },
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
+            },
+          }
+        );
+       jobID = jobResponse.data.data.id;
+
+
+
+
+
+
+        
+        urld= jobResponse.data.data.find((task) => task.name === "import-1").result.form.url;
+        pramnamed=jobResponse.data.data.find((task) => task.name === "import-1").result.form.parameters;
+
+       
+
+
+        // Step 2: Wait for the job to complete
+        const tasks = await waitForJobCompletion(jobId);
+
+        console.log("Completed Tasks:", tasks);
+
+        const metadataTask = tasks.find((task) => task.name === "task-2");
+        if (!metadataTask) {
+          throw new Error("Metadata task not found");
+        }
+        const fileMetadata = metadataTask.result.metadata;
+        const fileName = fileMetadata.FileName;
+        const pageCount = fileMetadata.PageCount;
+        const fileSize = fileMetadata.FileSize;
+        filesStore.addFile({
+          id: jobId,
+          name: fileName,
+          pageCount: pageCount,
+          size: fileSize,
+        },
+        );
+
+        message.value = `Uploaded document successfully with ID: ${jobId}`;
+
+      } catch (error) {
+        message.value = `Error uploading document: ${error.response ? error.response.data.message : error.message
+          }`;
+      }
+    }
+
+
+
+
+
     return {
       customDropzoneClass,
       customDropzoneMessageClass,
       customDropzoneItemClass,
       customDropzoneDetailsClass,
-      dropzoneRef,
-      
      
-
       openImageURLInput,
       showModal,
       imageUrl,
       closeModal,
-      handleImageUrl,
-
+    
+      
       faqs,
       activeFaqIndex,
       toggleFaqAnswer,
 
+      dropzoneRef,
       onFileAdd,
       onFileRemove,
       onFilesUploaded,
+
+//API
+waitForJobCompletion,
+handleImage,
+UploadDocument,
+
+jobID,
+urld,
+pramnamed,
+
     };
   },
 });
 </script>
 
-<style>
-
-
-.my-custom-dropzone {
-  flex-grow: 1; /* Make the dropzone take up all the available space */
-  background-color: #f0f6ff;
-  border-radius: 12px;
-  text-align: center;
-  height: 100%;
-}
-
-/* DropZone message styles */
-.my-custom-dropzone-message {
-  font-size: 25px;
-  color: #363861;
-  margin-top: 60px;
-  
-}
-.my-custom-dropzone-item{
-  color:#4d5dff;
- margin:4px;
- align-items: center;
- justify-content: center;
-   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.my-custom-dropzone-details{
-color:#4d5dff;
-}
-.content-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
-  overflow: hidden;
-  width: clamp(200px, 80%, 600px); 
-  aspect-ratio: 4 / 3;
-  border-radius: 10px;
-}
-
-
-@media (min-width: 1200px) {
-  .content-wrapper {
-    aspect-ratio: 3 / 2; 
-  }
-}
-.content-wrapper:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px dashed #4d5dff;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.dropzone-icon {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  pointer-events: none;
-  margin-top:40px;
-}
-
-.dropzone-icon img {
-  width: 100%;
-  height: 100%;
-  
-}
-.modal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: #fefefe;
-  padding: 20px 30px; /* Increased padding for better spacing */
-  border: 1px solid #888;
-  border-radius: 10px;
-  width: 80%; /* Constrain the width */
-  max-width: 400px; /* Maximum width */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add shadow for better aesthetics */
-}
-
-.modal-content > * {
-  margin: 10px 0; /* Add margin between the items */
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #888; /* Add color for better visibility */
-}
-
-.modal-content button {
-  background-color: #4D5DFF; /* Button color */
-  border: none; /* Remove border */
-  color: white; /* Button text color */
-  padding: 10px 20px; /* Add padding inside the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 5px; /* Rounded corners */
-  font-size: 16px; /* Increased font size */
-  margin-top: 10px; /* Margin at the top for spacing */
-}
-
-/* Style for the input box */
-.modal-content input[type="text"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%; /* Full width */
-  box-sizing: border-box; /* Ensure padding and border are included in the element's total width */
-  font-size: 16px;
-  margin-top: 10px; /* Margin at the top for spacing */
-}
-
-.middle-align {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px; /* Add margin at the top for spacing */
-}
-
-
-
-.boxingg{
-  margin:2rem;
-}
-.paragraphh{
-  font-size:16px;
-}
-.containerr {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30vh;
-}
-
-.image-container {
-  max-width: 400px;
-  max-height: 400px;
-  width: 100%;
-  height: 100%;
-}
-
-.imagee {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.faq-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 2rem 0;
- 
-}
-
-.faq-title {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.faq-item {
-  width: 50%;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-@media (max-width: 767px) {
-  .faq-item {
-    width: 75%;
-  }
-  .content-wrapper {
-    aspect-ratio: 16 / 9; /* Adjust the aspect ratio for smaller screens (e.g., phones) */
-  }
-}
-.faq-question {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  cursor: pointer;
-}
-
-.faq-question:hover {
-  background-color: #e9e9e9;
-  transition: background-color 0.3s ease;
-}
-
-.faq-arrow {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s ease;
-}
-
-.faq-arrow img {
-  width: 100%;
-  height: 100%;
-}
-
-.faq-answer {
-  padding: 1rem;
-  border-top: 1px solid #ccc;
-}
-
-.faq-answer p {
-  margin: 0;
-}
-
-.faq-arrow.flipped {
-  transform: rotate(180deg);
-}
-</style>

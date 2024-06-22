@@ -217,17 +217,9 @@
 </template>
 
 <script>
+//css code
+import '@/assets/styles/privacy&terms.css';
 export default {
     name: 'TermsOfService',
 };
 </script>
-<style>
-.container {
-    margin: 40px;
-}
-
-.bold {
-    font-weight: bold;
-    font-size: 30px;
-}
-</style>
