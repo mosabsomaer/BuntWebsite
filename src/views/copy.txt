@@ -1,5 +1,5 @@
 <template>
-        <p>job ID: {{ jobID }}</p>
+   <p>job ID: {{ jobID }}</p>
 <p>URL: {{ urld }}</p>
 <p>Parameters: {{ paramName }}</p>
 <br>
@@ -9,9 +9,7 @@
     <div class="dropzone-icon">
       <img src="@/assets/dropzone_icon.svg" alt="Dropzone Icon" />
     </div>
-
     <DropZone
-     
       :dropzoneClassName="customDropzoneClass"
       :dropzoneMessageClassName="customDropzoneMessageClass"
       :dropzoneItemClassName="customDropzoneItemClass"
@@ -20,11 +18,11 @@
       
       ref="dropzoneRef"
       :uploadOnDrop="false"
-          :url= this.urld
+      :url= this.urld
       :paramName= "paramName"
       :headers="{'Authorization' : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c'}"
 
-
+      
       :acceptedFiles="[
         'pdf',
         'eps',
@@ -109,7 +107,6 @@ export default defineComponent({
       pramnamed: {"acl": "private", "key": "a29c5ac7-c188-4636-bdd9-a4ba4bdd5bab/${filename}"},
     }
   },
-  
   components: {
     DropZone,
   },
@@ -117,7 +114,7 @@ export default defineComponent({
   computed: {
     paramName() {
       return Object.entries(this.pramnamed)
-        .map(([key, value]) => `${key}: ${value}`)
+        .map(([key, value]) => ${key}: ${value})
         .join(", ");
     }
   },
@@ -193,19 +190,10 @@ export default defineComponent({
 
 
 
-
-
                   // { "acl": "private", "key": "a29c5ac7-c188-4636-bdd9-a4ba4bdd5bab/${filename}", 
                   //"success_action_status": "201", "X-Amz-Credential": "cloudconvert-production/20240622/fra/s3/aws4_request",
                   // "X-Amz-Algorithm": "AWS4-HMAC-SHA256", "X-Amz-Date": "20240622T121401Z",
                   // "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yM1QwMDoxNDowMVoiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiYTI5YzVhYzctYzE4OC00NjM2LWJkZDktYTRiYTRiZGQ1YmFiXC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjIyVDEyMTQwMVoifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjJcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=", "X-Amz-Signature": "b2441f46884cec7d8e5bac231b98277d74c261be765603c7fb3a7e3a837e07ca" }
-
-
-
-
-          function senddropzone(){
-            dropzoneRef.value.processQueue();
-          }
 
     
 
@@ -213,10 +201,11 @@ export default defineComponent({
 
 
 
+function senddropzone(){
+  this.$dropzoneRef.value.processQueue();
+}
 
-
-
-async function UploadDocument(){
+    async function UploadDocument(){
       await this.handleImage()
       this.$dropzoneRef.value.processQueue();
 
@@ -241,11 +230,12 @@ async function UploadDocument(){
     }
 
 
+
     const message = ref("");
     async function waitForJobCompletion(jobId) {
       while (true) {
         const jobResponse = await axios.get(
-          `https://api.cloudconvert.com/v2/jobs/${jobId}`,
+          https://api.cloudconvert.com/v2/jobs/${jobId},
           {
             headers: {
               Authorization:
@@ -274,50 +264,50 @@ async function UploadDocument(){
 
 
     async function handleImage() {
-      
-      try {
-        // Step 1: Create a job
-        const jobResponse = await axios.post(
-          "https://api.cloudconvert.com/v2/jobs",
-          {
-            tasks: {
-              "import-1": {
-                operation: "import/upload",
-              },
-              "task-1": {
-                operation: "convert",
-                input: ["import-1"],
-                output_format: "pdf",
-              }, 
-              "task-2": {
-                operation: "metadata",
-                input: ["task-1"],
-              },
-              "export-1": {
-                operation: "export/url",
-                input: ["task-1"],
-                inline: false,
-                archive_multiple_files: false,
-              },
-            },
-            tag: "jobbuilder",
+  try {
+    // Step 1: Create a job
+    const jobResponse = await axios.post(
+      "https://api.cloudconvert.com/v2/jobs",
+      {
+        tasks: {
+          "import-1": {
+            operation: "import/upload",
           },
-          {
-            headers: {
-              Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
-            },
-          }
-        );
-        // Access reactive data properties using this
-        this.jobID = jobResponse.data.data.id;
+          "task-1": {
+            operation: "convert",
+            input: ["import-1"],
+            output_format: "pdf",
+          },
+          "task-2": {
+            operation: "metadata",
+            input: ["task-1"],
+          },
+          "export-1": {
+            operation: "export/url",
+            input: ["task-1"],
+            inline: false,
+            archive_multiple_files: false,
+          },
+        },
+        tag: "jobbuilder",
+      },
+      {
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
+        },
+      }
+    );
 
 
 
 
 
 
-       const importTask = jobResponse.data.data.tasks.find((task) => task.name === "import-1");
+    // Access reactive data properties using this
+    this.jobID = jobResponse.data.data.id;
+
+    const importTask = jobResponse.data.data.tasks.find((task) => task.name === "import-1");
     if (importTask) {
       this.urld = importTask.result.form.url;
       this.pramnamed = importTask.result.form.parameters;
@@ -326,13 +316,14 @@ async function UploadDocument(){
     }
 
 
-     
-    this.message = `Uploaded document successfully with ID: ${jobId}`;
+
+
+    this.message = Uploaded document successfully with ID: ${this.jobID};
   } catch (error) {
-        this.message = `Error uploading document: ${error.response ? error.response.data.message : error.message
-          }`;
-      }
+    this.message = Error uploading document: ${error.response ? error.response.data.message : error.message};
+  }
 }
+
 
 
 
@@ -366,9 +357,7 @@ UploadDocument,
 message,
 senddropzone,
 
-
     };
   },
 });
 </script>
-
