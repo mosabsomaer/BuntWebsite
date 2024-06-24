@@ -1,7 +1,7 @@
 <template>
         <p>job ID: {{ jobID }}</p>
 <p>URL: {{ urld }}</p>
-<p>Parameters: {{ paramName }}</p>
+<p>Parameters computed: {{ paramName }}</p>
 <br>
 <br>
 <p>Parameters: {{ pramnamed }}</p>
@@ -105,8 +105,16 @@ export default defineComponent({
   data() {
     return {
       jobID: "",
-      urld: "http://localhost:5173/home",
-      pramnamed: {"acl": "private", "key": "a29c5ac7-c188-4636-bdd9-a4ba4bdd5bab/${filename}"},
+      urld: "https://eu-central.storage.cloudconvert.com/tasks",
+      pramnamed: {"acl": "private",
+                            "key": "6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}",
+                            "success_action_status": "201",
+                            "X-Amz-Credential": "cloudconvert-production/20240624/fra/s3/aws4_request",
+                            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+                            "X-Amz-Date": "20240624T104853Z",
+                            "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=",
+                            "X-Amz-Signature": "6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"},
+                            
     }
   },
   
@@ -121,6 +129,11 @@ export default defineComponent({
         .join(", ");
     }
   },
+  //without param
+  // Content-Disposition: form-data; name="file"; filename="photo_4_2024-05-20_00-43-09.jpg"
+//with param
+  //Content-Disposition: form-data; name="acl: private, key: 6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}, success_action_status: 201, X-Amz-Credential: cloudconvert-production/20240624/fra/s3/aws4_request, X-Amz-Algorithm: AWS4-HMAC-SHA256, X-Amz-Date: 20240624T104853Z, Policy: eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=, X-Amz-Signature: 6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"; filename="photo_4_2024-05-20_00-43-09.jpg"
+
   setup() {
     const dropzoneRef = ref(null);
     const customDropzoneClass = "my-custom-dropzone";
@@ -203,8 +216,8 @@ export default defineComponent({
 
 
 
-          function senddropzone(){
-            dropzoneRef.value.processQueue();
+        async  function senddropzone(){
+          dropzoneRef.value.processQueue();
           }
 
     
@@ -217,9 +230,9 @@ export default defineComponent({
 
 
 async function UploadDocument(){
+      
+      
       await this.handleImage()
-      this.$dropzoneRef.value.processQueue();
-
 
 
       const tasks = await waitForJobCompletion(this.jobID);
