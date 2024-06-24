@@ -131,7 +131,7 @@ export default defineComponent({
   },
   //without param
   // Content-Disposition: form-data; name="file"; filename="photo_4_2024-05-20_00-43-09.jpg"
-//with param
+//with param (with param it thinks that name contains all the rest of the data like acl:private,key and all while without param its colors are correctly placed)
   //Content-Disposition: form-data; name="acl: private, key: 6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}, success_action_status: 201, X-Amz-Credential: cloudconvert-production/20240624/fra/s3/aws4_request, X-Amz-Algorithm: AWS4-HMAC-SHA256, X-Amz-Date: 20240624T104853Z, Policy: eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=, X-Amz-Signature: 6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"; filename="photo_4_2024-05-20_00-43-09.jpg"
 
   setup() {
