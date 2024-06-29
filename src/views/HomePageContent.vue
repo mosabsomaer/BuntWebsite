@@ -1,8 +1,6 @@
 <template>
         <p>job ID: {{ jobID }}</p>
-<p>URL: {{ urld }}</p>
-<p>Parameters computed: {{ paramName }}</p>
-<br>
+
 <br>
 <p>Parameters: {{ pramnamed }}</p>
   <div class="content-wrapper">
@@ -11,7 +9,6 @@
     </div>
 
     <DropZone
-     
       :dropzoneClassName="customDropzoneClass"
       :dropzoneMessageClassName="customDropzoneMessageClass"
       :dropzoneItemClassName="customDropzoneItemClass"
@@ -21,9 +18,8 @@
       ref="dropzoneRef"
       :uploadOnDrop="false"
           :url= this.urld
-      :paramName= "paramName"
       :headers="{'Authorization' : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c'}"
-
+      @sending="onSending"
 
       :acceptedFiles="[
         'pdf',
@@ -42,13 +38,10 @@
         'xlsx',
         'txt',
       ]"
-      @addedFile="onFileAdd"
-      @removedFile="onFileRemove"
-      @uploaded="onFilesUploaded"
     />
   </div>
 <button @click="UploadDocument">upload document</button>
-<button @click="senddropzone">run dropzone</button>
+
   <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
   <div v-if="showModal" class="modal" @click="closeModal">
     <div class="modal-content" @click.stop>
@@ -106,34 +99,34 @@ export default defineComponent({
     return {
       jobID: "",
       urld: "https://eu-central.storage.cloudconvert.com/tasks",
-      pramnamed: {"acl": "private",
-                            "key": "6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}",
-                            "success_action_status": "201",
-                            "X-Amz-Credential": "cloudconvert-production/20240624/fra/s3/aws4_request",
-                            "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
-                            "X-Amz-Date": "20240624T104853Z",
-                            "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=",
-                            "X-Amz-Signature": "6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"},
-                            
+      pramnamed: {
+        "acl": "private",
+        "key": "6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}",
+        "success_action_status": "201",
+        "X-Amz-Credential": "cloudconvert-production/20240624/fra/s3/aws4_request",
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Date": "20240624T104853Z",
+        "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=",
+        "X-Amz-Signature": "6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"
+      },
+        type:""                    
     }
   },
-  
+
   components: {
     DropZone,
   },
   name: "HomePageContent",
-  computed: {
-    paramName() {
-      return Object.entries(this.pramnamed)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ");
-    }
-  },
-  //without param
-  // Content-Disposition: form-data; name="file"; filename="photo_4_2024-05-20_00-43-09.jpg"
-//with param (with param it thinks that name contains all the rest of the data like acl:private,key and all while without param its colors are correctly placed)
-  //Content-Disposition: form-data; name="acl: private, key: 6e24c408-172e-41fd-a818-ff6dbdc6c2f9/${filename}, success_action_status: 201, X-Amz-Credential: cloudconvert-production/20240624/fra/s3/aws4_request, X-Amz-Algorithm: AWS4-HMAC-SHA256, X-Amz-Date: 20240624T104853Z, Policy: eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=, X-Amz-Signature: 6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"; filename="photo_4_2024-05-20_00-43-09.jpg"
 
+ 
+  methods: {
+  onSending(file, xhr, formData) {
+    
+      Object.entries(this.pramnamed).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+    }
+},
   setup() {
     const dropzoneRef = ref(null);
     const customDropzoneClass = "my-custom-dropzone";
@@ -162,20 +155,8 @@ export default defineComponent({
         answer: "You can upload up to 10 files at a time.",
       },
     ];
- 
-    const onFileAdd = ({ id, file }) => {
-      filesStore.addFile({ id, name: file.name, size: file.size });
-    };
 
-    const onFileRemove = ({ id }) => {
-      filesStore.removeFile(id);
-    };
 
-    const onFilesUploaded = (items) => {
-      items.forEach(({ file }) => {
-        filesStore.uploadFile({ name: file.name, size: file.size });
-      });
-    };
 
 
 
@@ -196,36 +177,7 @@ export default defineComponent({
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                  // { "acl": "private", "key": "a29c5ac7-c188-4636-bdd9-a4ba4bdd5bab/${filename}", 
-                  //"success_action_status": "201", "X-Amz-Credential": "cloudconvert-production/20240622/fra/s3/aws4_request",
-                  // "X-Amz-Algorithm": "AWS4-HMAC-SHA256", "X-Amz-Date": "20240622T121401Z",
-                  // "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yM1QwMDoxNDowMVoiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiYTI5YzVhYzctYzE4OC00NjM2LWJkZDktYTRiYTRiZGQ1YmFiXC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjIyVDEyMTQwMVoifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjJcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=", "X-Amz-Signature": "b2441f46884cec7d8e5bac231b98277d74c261be765603c7fb3a7e3a837e07ca" }
-
-
-
-
-        async  function senddropzone(){
-          dropzoneRef.value.processQueue();
-          }
-
-    
-
-
-
-
-
+   
 
 
 
@@ -233,7 +185,7 @@ async function UploadDocument(){
       
       
       await this.handleImage()
-
+      dropzoneRef.value.processQueue();
 
       const tasks = await waitForJobCompletion(this.jobID);
       console.log("Completed Tasks:", tasks);
@@ -241,15 +193,14 @@ async function UploadDocument(){
       if (!metadataTask) {
         throw new Error("Metadata task not found");
       }
-      const fileMetadata = metadataTask.result.metadata;
-      const fileName = fileMetadata.FileName;
-      const pageCount = fileMetadata.PageCount;
-      const fileSize = fileMetadata.FileSize;
-      this.filesStore.addFile({
+
+
+
+      filesStore.addFile({
         id: this.jobID,
-        name: fileName,
-        pageCount: pageCount,
-        size: fileSize,
+        name: fileMetadata.FileName,
+        pageCount: fileMetadata.PageCount,
+        size: fileMetadata.FileSize,
       });
     }
 
@@ -368,16 +319,13 @@ async function UploadDocument(){
       toggleFaqAnswer,
 
       dropzoneRef,
-      onFileAdd,
-      onFileRemove,
-      onFilesUploaded,
 
 //API
 waitForJobCompletion,
 handleImage,
 UploadDocument,
 message,
-senddropzone,
+
 
 
     };

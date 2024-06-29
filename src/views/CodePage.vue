@@ -21,7 +21,7 @@
   export default {
     setup() {
       const filesStore = useFilesStore();
-      const totalPrice = computed(() => filesStore.totalPrice);
+      const totalPrice =  filesStore.calculateTotalPrice();
       const numberOfPapers = computed(() => {
         return filesStore.files.reduce((total, file) => total + file.copies, 0);
       });
