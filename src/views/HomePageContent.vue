@@ -20,7 +20,7 @@
           :url= this.urld
       :headers="{'Authorization' : 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c'}"
       @sending="onSending"
-
+      
       :acceptedFiles="[
         'pdf',
         'eps',
@@ -39,7 +39,9 @@
         'txt',
       ]"
     />
+   
   </div>
+ 
 <button @click="UploadDocument">upload document</button>
 
   <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
@@ -97,6 +99,7 @@ import '@/assets/styles/homepage.css';
 export default defineComponent({
   data() {
     return {
+     
       jobID: "",
       urld: "https://eu-central.storage.cloudconvert.com/tasks",
       pramnamed: {
@@ -109,7 +112,7 @@ export default defineComponent({
         "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNC0wNi0yNFQyMjo0ODo1M1oiLCJjb25kaXRpb25zIjpbeyJhY2wiOiJwcml2YXRlIn0seyJidWNrZXQiOiJ0YXNrcyJ9LFsic3RhcnRzLXdpdGgiLCIka2V5IiwiNmUyNGM0MDgtMTcyZS00MWZkLWE4MTgtZmY2ZGJkYzZjMmY5XC8iXSx7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6IjIwMSJ9LHsiWC1BbXotRGF0ZSI6IjIwMjQwNjI0VDEwNDg1M1oifSx7IlgtQW16LUNyZWRlbnRpYWwiOiJjbG91ZGNvbnZlcnQtcHJvZHVjdGlvblwvMjAyNDA2MjRcL2ZyYVwvczNcL2F3czRfcmVxdWVzdCJ9LHsiWC1BbXotQWxnb3JpdGhtIjoiQVdTNC1ITUFDLVNIQTI1NiJ9XX0=",
         "X-Amz-Signature": "6ca8c29b530bfe98df0b716a280d470526931772b7c0dfd9990511bc36f3b4d1"
       },
-        type:""                    
+                         
     }
   },
 
@@ -120,11 +123,13 @@ export default defineComponent({
 
  
   methods: {
-  onSending(file, xhr, formData) {
-    
-      Object.entries(this.pramnamed).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
+    async onSending(file, xhr, formData) {
+    await this.handleImage();
+
+      Object.entries(this.pramnamed).forEach(([key, value]) => { // like this one make a foreach file handleimage ask gpt about it 
+        formData.append(key, value);                             //this way for each file it will create a job and  take new form data and send it to the api
+      });                                           //or this one makes more sense for do a= await this.handleimage() and get the prams and give it to  Object.entries
+     
     }
 },
   setup() {
@@ -156,14 +161,9 @@ export default defineComponent({
       },
     ];
 
-
-
-
-
     function openImageURLInput() {
       showModal.value = true;
     }
-
     function closeModal() {
       showModal.value = false;
       imageUrl.value = "";
@@ -182,11 +182,8 @@ export default defineComponent({
 
 
 async function UploadDocument(){
-      
-      
-      await this.handleImage()
+    
       dropzoneRef.value.processQueue();
-
       const tasks = await waitForJobCompletion(this.jobID);
       console.log("Completed Tasks:", tasks);
       const metadataTask = tasks.find((task) => task.name === "task-2");
