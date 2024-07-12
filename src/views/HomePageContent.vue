@@ -82,13 +82,14 @@ to us!</h2>
 </div>
 </div>
 
-
+<urlLink/>
 </template>
 
 <script>
 import axios from "axios";
 import { defineComponent, ref } from "vue";
 import { DropZone } from "dropzone-vue";
+import { urlLink } from './testView.vue';
 //local data storage
 import { useFilesStore } from '@/stores/files';
 //api logic
@@ -118,6 +119,7 @@ export default defineComponent({
 
   components: {
     DropZone,
+    urlLink
   },
   name: "HomePageContent",
 

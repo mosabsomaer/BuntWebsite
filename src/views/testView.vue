@@ -21,12 +21,13 @@ import axios from "axios";
 import { defineComponent, ref, computed } from "vue";
 import { useFilesStore } from "@/stores/files";
 
-export default defineComponent({
+export  default  defineComponent({
   data() {
     return {
 
     };
   },
+  name: "urlLink",
   setup() {
     const showModal = ref(false);
     const showError = ref(false);
