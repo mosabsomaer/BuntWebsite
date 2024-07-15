@@ -1,7 +1,7 @@
 <template>
   <div class="order-container">
     <h1 class="order-word">Order Code</h1>
-    <div class="order-code" @click="copyOrderCode">{{ orderCode }}</div>
+    <div class="order-code" @click="copyOrderCode">{{ order_id }}</div>
     <div class="order-details">
       <p>Number of Papers: {{ numberOfPapers }}</p>
       <p>Total Price: {{ totalPrice }} Dinar</p>
@@ -13,6 +13,8 @@
     </div>
     <div v-if="copySuccess" class="copy-feedback">Copied to Clipboard</div>
   </div>
+
+
 </template>
 
 <script>
@@ -20,13 +22,17 @@ import { computed, ref } from "vue";
 import { useFilesStore } from "@/stores/files";
 
 export default {
+  components: {
+   
+  },
   setup() {
     const filesStore = useFilesStore();
     const totalPrice = computed(() => filesStore.totalPrice);
+    const order_id = computed(()=> filesStore.order_id);
     const numberOfPapers = computed(() => {
       return filesStore.files.reduce((total, file) => total + file.copies, 0);
     });
-    const orderCode = computed(() => "410324"); // Example order code
+
 
     const copySuccess = ref(false);
 
@@ -42,9 +48,9 @@ export default {
     return {
       totalPrice,
       numberOfPapers,
-      orderCode,
       copyOrderCode,
       copySuccess,
+      order_id
     };
   },
 };

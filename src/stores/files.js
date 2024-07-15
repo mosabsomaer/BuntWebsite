@@ -5,6 +5,7 @@ export const useFilesStore = defineStore('files', {
   state: () => ({
     files: [],
     totalprice: 0,
+    order_id:'000000',
   }),
   actions: {
     addFile(file) {

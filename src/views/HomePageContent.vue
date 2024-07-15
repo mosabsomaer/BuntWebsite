@@ -44,17 +44,10 @@
  
 <button @click="UploadDocument">upload document</button>
 
-  <p class="middle-align">Paste <a href="" @click.prevent="openImageURLInput">URL</a> image link</p>
-  <div v-if="showModal" class="modal" @click="closeModal">
-    <div class="modal-content" @click.stop>
-      <span class="close-button" @click="closeModal">&times;</span>
-      <input type="text" v-model="imageUrl" placeholder="Enter image URL" />
-      <button @click="handleImageUrl">Submit</button>
-    </div>
-  </div>
 
  
 <div class= boxingg>
+  <urlbox></urlbox>
   <h2 class="faq-title">Leave the printing<br>
 to us!</h2>
 <p class="paragraphh" >Simply upload your documents and insert coins and your documents will be printed immediately </p>
@@ -82,18 +75,17 @@ to us!</h2>
 </div>
 </div>
 
-<urlLink/>
+
 </template>
 
 <script>
 import axios from "axios";
 import { defineComponent, ref } from "vue";
 import { DropZone } from "dropzone-vue";
-import { urlLink } from './testView.vue';
+
+import urlbox from '@/components/urlbox.vue'
 //local data storage
 import { useFilesStore } from '@/stores/files';
-//api logic
-// import {taskss} from "@/API/cloudconvert";
 //css code
 import '@/assets/styles/homepage.css';
 
@@ -119,14 +111,14 @@ export default defineComponent({
 
   components: {
     DropZone,
-    urlLink
+    urlbox
   },
   name: "HomePageContent",
-
+ 
  
   methods: {
     async onSending(file, xhr, formData) {
-    await this.handleImage();
+    
 
       Object.entries(this.pramnamed).forEach(([key, value]) => { // like this one make a foreach file handleimage ask gpt about it 
         formData.append(key, value);                             //this way for each file it will create a job and  take new form data and send it to the api
@@ -140,22 +132,20 @@ export default defineComponent({
     const customDropzoneMessageClass = "my-custom-dropzone-message";
     const customDropzoneItemClass = "my-custom-dropzone-item";
     const customDropzoneDetailsClass = "my-custom-dropzone-details";
-    const showModal = ref(false);
-    const imageUrl = ref("");
     const activeFaqIndex = ref(-1);
     const filesStore = useFilesStore();
     const faqs = [
       {
         question: "What is the price to print 1 paper?",
-        answer: "The price to print 1 paper is $0.10.",
+        answer: "The price to print 1 paper is 1 LYD.",
       },
       {
         question: "What file types does the machine accept?",
-        answer: "The machine accepts    pdf, eps, jpg, tiff, png, JPEG, svg, pages, doc, docx, ppt, pptx, xls, xlsx, txt file types.",
+        answer: "The machine accepts pdf, eps, jpg, tiff, png, JPEG, svg, pages, doc, docx, ppt, pptx, xls, xlsx, txt file types.",
       },
       {
         question: "How long does it take before order code expires?",
-        answer: "The order code expires in 3 days.",
+        answer: "The order code expires in 1 days.",
       },
       {
         question: "How many files can I upload?",
@@ -163,13 +153,6 @@ export default defineComponent({
       },
     ];
 
-    function openImageURLInput() {
-      showModal.value = true;
-    }
-    function closeModal() {
-      showModal.value = false;
-      imageUrl.value = "";
-    }
     function toggleFaqAnswer(index) {
       if (activeFaqIndex.value === index) {
         activeFaqIndex.value = -1;
@@ -184,23 +167,25 @@ export default defineComponent({
 
 
 async function UploadDocument(){
-    
+  await this.handleImage();
       dropzoneRef.value.processQueue();
       const tasks = await waitForJobCompletion(this.jobID);
       console.log("Completed Tasks:", tasks);
       const metadataTask = tasks.find((task) => task.name === "task-2");
+  
       if (!metadataTask) {
         throw new Error("Metadata task not found");
       }
-
-
-
+      const fileMetadata = metadataTask.result.metadata;
       filesStore.addFile({
         id: this.jobID,
         name: fileMetadata.FileName,
         pageCount: fileMetadata.PageCount,
         size: fileMetadata.FileSize,
       });
+
+
+  
     }
 
 
@@ -212,7 +197,7 @@ async function UploadDocument(){
           {
             headers: {
               Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZTQ5YWJlMjEyOTFmYmQ1NTRjNzIzNWM5YTQ3ZDRkMGQyNDdjZjdhNTdjNDM0Y2Y1OGUyNmVlZDc2ZTk4MjVhNWFiMWFmZTVhZmU4YmE4YWIiLCJpYXQiOjE3MjAyMDIwOTIuOTE2NzI3LCJuYmYiOjE3MjAyMDIwOTIuOTE2NzI5LCJleHAiOjQ4NzU4NzU2OTIuOTEzNjA1LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.cGVM4cETdbGkhO0qjxj6nvLvx_odXtixgyixb6oPQavhEweTqD9yS6hyHoDeDcCzyvqOYURCu024Ke-L22nz_fS1RkjSynOCatYekoGRsGIYTWmiDeXh8jlPI0SVCveRAgDuXNkZmnNERHUbUD82_kTrfp13nrPpOb8z_uuaP-uk-dY5Hv7afgz8rKPa0q0NbFF716-KVmk8DNhprSspP-x3rDrj9VGvJSjKRzfJTk1u5V21OPbAqU3G9YGKifZvLDJMQ-gJEA8U36ab93aE5LLn8z9sfKfFIcSbxWtwczpUgYa-MC_7SKtCBOp3TxkA2dvum-TRX1Sj4fhmlw7oc55TR_-goSUZ2k6uUXrVIa2IXGGxjnFmZwHW5DjXTNykEgG0qh3U3mn6IGhTW5YnEegTVQ4D4zBAltsWkpg0VGEXPiKx2n7YUVt9JiDhQhddtSOb1Q6B7e43lTymtJ7quqz6TRmUvh6hc3T-eW9wSVFHdS8srt3T1G0xr6lUVcBgGzjQNBGxkX82a3_K6MLbmBzq316XRAQYauT3F9yIMa1e4mPOPxqZPI3DVzzKn9YiAcT0yXtqj1cqcy79S2Y_Bzd_KtGPBuOcn1hlGnHtc3AdhyaaNWjIyFFbOwR3psAy63hm_yHZItmYduOU-idFlr4EiEFCKHk_esCL-QM4asw",
             },
           }
         );
@@ -268,16 +253,12 @@ async function UploadDocument(){
           {
             headers: {
               Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMGFlMmNhODBiOTMxMzg5MWVkNjkxMTFlMDEwMzcxMWQ1MDg3NmM0MDI2YjFhMzI2ZGYwMmZhMmI1NjhmMmRhNmY1ZDYxMTdkZDk3YThiMjEiLCJpYXQiOjE3MTc4NzY3MDguMjU2MTA4LCJuYmYiOjE3MTc4NzY3MDguMjU2MTA5LCJleHAiOjQ4NzM1NTAzMDguMjUyMzM2LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.aTf8WYbw4q0E-TppaCbr2i6jvkSd3OkVX1zh35QT8ij2X5zgqtaXhAHRcVD5FRpIp4t8YQg0pSwFPqWFoT5xMAzV1YGO9X_wVtIlwlh-5SNTjDQhTNBNmRm0jNAxVaHqg2B7in0uB9MhK892qn6mE_P2peyebL794rdIulRyb6808_mzD8BtcXXAsI362zHyjIdSDE6xyv8GwdLz1MhZI-s-XEkFEKYX8TBKCQ31xy9dswsM1GLznDzCFQgEbISmNI9t7X8SLVDY5LPcnH3DMOwI5WbsoQctzSduPifydD72AXO3g4FHTfErh4obG6U6xcyZn32ymhnwlQ0UrQw3JbvCitrJWvGHQ8pTxZC4-HfMwPgRob1-olXCXJyvSD28-Qk-1kB5LqVbIuLTHG5kilJP3PRahNOQG0kHKIo_KkAtiB0WHVWT4V9ImJy0R26PHUdlarZSd_jZsrV8LtmVl1yODBYAEnRkLHo2UNbhL-CEwURQRAnzkYHm2067tEkCFogJcb-75MZaHdAocbGs41__z1K6RdzqCzsPjFI_Dj49oPRe48b6yGg8hOtWYNbED0kA-hZh0FV6vNjjoeyYYG2AUJaCZBkLUPi-ewRaXeSpTeDtqvqZCc2UqRjxTHywecy_lVpL82BHKRxAjOfZwAbTW0lTBXwZoj8Ixtw0i2c",
+                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZTQ5YWJlMjEyOTFmYmQ1NTRjNzIzNWM5YTQ3ZDRkMGQyNDdjZjdhNTdjNDM0Y2Y1OGUyNmVlZDc2ZTk4MjVhNWFiMWFmZTVhZmU4YmE4YWIiLCJpYXQiOjE3MjAyMDIwOTIuOTE2NzI3LCJuYmYiOjE3MjAyMDIwOTIuOTE2NzI5LCJleHAiOjQ4NzU4NzU2OTIuOTEzNjA1LCJzdWIiOiI2NzI4MDMwOSIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.cGVM4cETdbGkhO0qjxj6nvLvx_odXtixgyixb6oPQavhEweTqD9yS6hyHoDeDcCzyvqOYURCu024Ke-L22nz_fS1RkjSynOCatYekoGRsGIYTWmiDeXh8jlPI0SVCveRAgDuXNkZmnNERHUbUD82_kTrfp13nrPpOb8z_uuaP-uk-dY5Hv7afgz8rKPa0q0NbFF716-KVmk8DNhprSspP-x3rDrj9VGvJSjKRzfJTk1u5V21OPbAqU3G9YGKifZvLDJMQ-gJEA8U36ab93aE5LLn8z9sfKfFIcSbxWtwczpUgYa-MC_7SKtCBOp3TxkA2dvum-TRX1Sj4fhmlw7oc55TR_-goSUZ2k6uUXrVIa2IXGGxjnFmZwHW5DjXTNykEgG0qh3U3mn6IGhTW5YnEegTVQ4D4zBAltsWkpg0VGEXPiKx2n7YUVt9JiDhQhddtSOb1Q6B7e43lTymtJ7quqz6TRmUvh6hc3T-eW9wSVFHdS8srt3T1G0xr6lUVcBgGzjQNBGxkX82a3_K6MLbmBzq316XRAQYauT3F9yIMa1e4mPOPxqZPI3DVzzKn9YiAcT0yXtqj1cqcy79S2Y_Bzd_KtGPBuOcn1hlGnHtc3AdhyaaNWjIyFFbOwR3psAy63hm_yHZItmYduOU-idFlr4EiEFCKHk_esCL-QM4asw",
             },
           }
         );
         // Access reactive data properties using this
         this.jobID = jobResponse.data.data.id;
-
-
-
-
 
 
        const importTask = jobResponse.data.data.tasks.find((task) => task.name === "import-1");
@@ -287,9 +268,6 @@ async function UploadDocument(){
     } else {
       throw new Error("Import task not found");
     }
-
-
-     
     this.message = `Uploaded document successfully with ID: ${jobId}`;
   } catch (error) {
         this.message = `Error uploading document: ${error.response ? error.response.data.message : error.message
@@ -306,12 +284,10 @@ async function UploadDocument(){
       customDropzoneMessageClass,
       customDropzoneItemClass,
       customDropzoneDetailsClass,
-     
-      openImageURLInput,
-      showModal,
-      imageUrl,
-      closeModal,
     
+
+
+
       
       faqs,
       activeFaqIndex,
