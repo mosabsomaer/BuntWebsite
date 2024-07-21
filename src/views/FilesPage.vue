@@ -74,7 +74,7 @@
       
   </div>
 
-  <!-- Section to display files -->
+
   <div v-if="files.length" class="files-list">
     <h3>Uploaded Files</h3>
     <ul>
@@ -119,7 +119,7 @@ async save() {
       const files = computed(() => filesStore.files);
 
       // Send your request using axios to create the order
-      const createOrderResponse = await axios.get("http://127.0.0.1:8000/api/createorders");
+      const createOrderResponse = await axios.get(filesStore.server_link+"/api/createorders");
       console.log(createOrderResponse.data.message);
       filesStore.order_id = createOrderResponse.data.data.order_id;
 
@@ -133,7 +133,7 @@ async save() {
 
       // Send the file details to the server
       for (const fileDetail of fileDetails) {
-        const fileresponse = await axios.post('http://127.0.0.1:8000/api/files', fileDetail);
+        const fileresponse = await axios.post(filesStore.server_link+'/api/files', fileDetail);
         console.log(fileresponse.data.message);
       }
 
@@ -179,42 +179,6 @@ async save() {
       filesStore.decrementCopies(id);
     };
 
-//     async function save() {
-//   try {
-//     if (this.isSaveDisabled) {
-//       // If save is disabled, do not proceed with the request or navigation
-//       return;
-//     }
-//     const filesStore = useFilesStore();
-//     const files = computed(() => filesStore.files);
-
-//     // Send your request using axios to create the order
-//     const createOrderResponse = await axios.get("http://127.0.0.1:8000/api/createorders");
-//     console.log(createOrderResponse.data.message);
-//     filesStore.order_id = createOrderResponse.data.data.order_id;
-
-//     // Prepare the file details for the JSON store request
-//     const fileDetails = files.value.map((file) => ({
-//       JobID: file.id,
-//       copies: file.copies,
-//       color_mode: file.colorMode ? 1 : 0,
-//       order_id: filesStore.order_id,
-//     }));
-
-//     // Send the file details to the server
-//     for (const fileDetail of fileDetails) {
-//       const fileresponse = await axios.post('http://127.0.0.1:8000/api/files', fileDetail);
-//       console.log(fileresponse.data.message);
-//     }
-
-//     // Navigate to the '/code' page
-//     sda();
-//   } catch (error) {
-//     // Handle any errors
-//     console.error(error);
-//   }
-// }
-
 
 
 
@@ -255,7 +219,7 @@ async save() {
       allFilesHaveCopies,
       isSaveDisabled,
       agreed,
-      // save,
+
       order_id,
   
     };

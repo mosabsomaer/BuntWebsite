@@ -1,7 +1,7 @@
 <template>
   <div class="order-container">
     <h1 class="order-word">Order Code</h1>
-    <div class="order-code" @click="copyOrderCode">{{ order_id }}</div>
+    <div class="order-code" @click="copyOrderCode()">{{ order_id }}</div>
     <div class="order-details">
       <p>Number of Papers: {{ numberOfPapers }}</p>
       <p>Total Price: {{ totalPrice }} Dinar</p>
@@ -37,7 +37,7 @@ export default {
     const copySuccess = ref(false);
 
     const copyOrderCode = () => {
-      navigator.clipboard.writeText(orderCode.value).then(() => {
+      navigator.clipboard.writeText(order_id.value).then(() => {
         copySuccess.value = true;
         setTimeout(() => {
           copySuccess.value = false;

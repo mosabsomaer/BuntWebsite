@@ -6,6 +6,8 @@ import TermsOfService from '@/views/TermsOfService.vue';
 import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
 import CodePage from '@/views/CodePage.vue';
 import testView from '@/views/testView.vue';
+import Login from '@/views/Login.vue';
+import Post from '@/views/Post.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +40,16 @@ const router = createRouter({
       path: '/code',
       name: 'CodePage',
       component: CodePage
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/posts',
+      name: 'posts',
+      component: Post
     },
   //redirect
   {

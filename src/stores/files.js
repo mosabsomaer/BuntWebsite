@@ -6,6 +6,8 @@ export const useFilesStore = defineStore('files', {
     files: [],
     totalprice: 0,
     order_id:'000000',
+    server_link:'http://127.0.0.1:8000',
+    token:"",
   }),
   actions: {
     addFile(file) {

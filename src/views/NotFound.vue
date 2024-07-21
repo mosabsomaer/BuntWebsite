@@ -1,8 +1,10 @@
 <template>
     <div class="container">
-      <h1>404</h1>
-      <h2>Oops! Page not found.</h2>
-      <p>The page you're looking for doesn't exist or has been moved.</p>
+      <h1 class="jj">404</h1>
+     
+      <h2 class="kk">Oops! Page not found.</h2>
+      <p class="pp">The page you're looking for doesn't exist or has been moved.</p>
+   
       <router-link to="/" class="btn">Go to Home</router-link>
     </div>
   </template>
@@ -23,7 +25,6 @@
   
   body {
     font-family: Arial, sans-serif;
-    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,22 +37,23 @@
     padding: 40px;
     background-color: #fff;
     border-radius: 8px;
-
+    flex-direction: column; 
+    align-items: center; 
   }
   
-  h1 {
+  .jj {
     font-size: 72px;
     font-weight: bold;
     color: #BFAD69;
     margin-bottom: 20px;
   }
   
-  h2 {
+  .kk {
     font-size: 28px;
     margin-bottom: 10px;
   }
   
-  p {
+  .pp {
     font-size: 16px;
     color: #666;
     margin-bottom: 30px;
