@@ -146,7 +146,7 @@ export default defineComponent({
       },
       {
         question: "How long does it take before order code expires?",
-        answer: "The order code expires in 1 days.",
+        answer: "The order code expires in 1 day.",
       },
       {
         question: "How many files can I upload?",

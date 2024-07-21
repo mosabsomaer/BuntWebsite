@@ -1,5 +1,7 @@
-.container {
+.container00 {
     margin: 40px;
+    flex-direction: column; 
+    align-items: center; 
 }
 
 .bold {

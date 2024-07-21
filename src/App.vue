@@ -15,11 +15,10 @@
         <p><strong>Bunt</strong></p>
         <p>We are a leading provider of printing services, offering reliable and efficient solutions for all your
           printing needs.</p>
-        <p>Location: 123 Conversion Lane, Tech City</p>
+        <p>Location: Benghazi / Libya</p>
       </div>
       <div class="footer-links">
         <router-link to="/" class="link" @click.native="scrollToTop">Home</router-link>
-        <router-link to="/location" class="link" @click.native="scrollToTop">Our Location</router-link>
         <router-link to="/terms" class="link" @click.native="scrollToTop">Terms of Service</router-link>
         <router-link to="/privacy" class="link" @click.native="scrollToTop">Privacy Policy</router-link>
       </div>

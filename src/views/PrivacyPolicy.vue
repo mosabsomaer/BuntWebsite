@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container00">
         <h1>Privacy Policy</h1>
         <p>Effective Date
             <br /><br />May 24, 2024
