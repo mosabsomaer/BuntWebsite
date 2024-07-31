@@ -215,7 +215,39 @@ font-size: 15px;
   
 
   
+  .form-container {
+    margin-top: 20px;
+    margin-left:150px;
+    text-align: left; /* Align the content to the left */
+  }
   
+  .form-label {
+    color: #6366f1;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-input {
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    border: 1px solid #a0a0a0;
+    border-radius: 5px;
+  }
+  
+  .form-button {
+    padding: 10px 20px;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .form-button:hover {
+    background-color: #4346f1;
+  }
   
   
   
