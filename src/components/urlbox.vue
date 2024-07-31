@@ -140,6 +140,8 @@ export default{
         setTimeout(() => {
           message.value = "";
         }, 3000);
+        this.$router.push('/files')
+
       } catch (error) {
         message.value = `Error uploading document: ${error.response ? error.response.data.message : error.message
           }`;

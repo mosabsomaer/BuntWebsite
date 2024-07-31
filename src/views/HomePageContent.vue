@@ -1,9 +1,8 @@
 <template>
-
-        <p>job ID: {{ jobID }}</p>
-
-<br>
-<p>Parameters: {{ pramnamed }}</p>
+  <div>
+  <router-link :to="{ name: 'home' }" class="router-link">Home</router-link>
+  <router-link :to="{ name: 'FilesPages' }" class="router-link">Files</router-link>
+</div>
   <div class="content-wrapper">
     <div class="dropzone-icon">
       <img src="@/assets/dropzone_icon.svg" alt="Dropzone Icon" />
@@ -43,12 +42,14 @@
    
   </div>
  
-<button @click="UploadDocument">upload document</button>
 
 
  
 <div class= boxingg>
   <urlbox></urlbox>
+  <div class="mgk">
+  <button class="save-btnj" @click="UploadDocument">upload document</button>
+</div>
   <h2 class="faq-title">Leave the printing<br>
 to us!</h2>
 <p class="paragraphh" >Simply upload your documents and insert coins and your documents will be printed immediately </p>
@@ -57,8 +58,7 @@ to us!</h2>
       <img src="@/assets/recycle pic.svg" class="imagee" />
     </div>
   </div>
-  <h2 class="faq-title">What is Bunt?<br>
-to us!</h2>
+  <h2 class="faq-title">What is Bunt?</h2>
 <p class="paragraphh" >Is commercial vending machine that prints paper on demand, we have built it to<br> be as easy as taking a picture by having vending machine accept as many types of files as possible.</p>
   <div class="faq-container">
     <h2 class="faq-title">Frequently Asked Questions</h2>
@@ -121,7 +121,7 @@ export default defineComponent({
     async onSending(file, xhr, formData) {
     
 
-      Object.entries(this.pramnamed).forEach(([key, value]) => { // like this one make a foreach file handleimage ask gpt about it 
+      Object.entries(this.pramnamed).forEach(([key, value]) => { // like this one make a foreach file handleimage 
         formData.append(key, value);                             //this way for each file it will create a job and  take new form data and send it to the api
       });                                           //or this one makes more sense for do a= await this.handleimage() and get the prams and give it to  Object.entries
      
@@ -309,3 +309,5 @@ message,
 });
 </script>
 
+<!-- site key: 6LeMeBwqAAAAAAfcKcOw_MRAqeFT38-EPCOoun6l -->
+ <!-- priv key: 6LeMeBwqAAAAAO1ZK4ynQCHaFSjffD-b6DifZYXm -->

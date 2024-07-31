@@ -5,9 +5,8 @@
       <span class="app-name">Bunt</span>
     </div>
   </router-link>
-  <router-link :to="{ name: 'home' }">Home</router-link>
-  <router-link :to="{ name: 'FilesPages' }">Files</router-link>
-  <router-link :to="{ name: 'testView' }">test page</router-link>
+
+<div class="bottom-line"></div>
   <router-view />
   <footer class="foot">
     <div class="footer-content">
@@ -38,12 +37,12 @@ import HomePageContent from "./views/HomePageContent.vue";
 
 export default defineComponent({
   components: {
-
     HomePageContent
   },
   name: "App", 
   
   methods: {
+  
     scrollToTop() {
       window.scrollTo({ top: 0 });
     }
@@ -133,5 +132,38 @@ body {
 .company-info p,
 .powered-by p {
   margin: 5px 0;
+}
+
+
+
+
+.router-link {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  padding: 10px 0;
+  text-decoration: none;
+  color: rgb(73, 73, 73);
+  position: relative;
+}
+
+.router-link:hover {
+  background-color: #f0f0f0;
+  color: gray;
+}
+
+
+
+.router-link::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background-color: rgb(160, 160, 160); /* Black line between links */
+  top: 0;
+  right: 0;
+}
+.router-link {
+  border-bottom: 1px solid rgb(147, 147, 147); /* Add a bottom border to each link */
 }
 </style>

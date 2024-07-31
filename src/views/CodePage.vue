@@ -30,7 +30,7 @@ export default {
     const totalPrice = computed(() => filesStore.totalPrice);
     const order_id = computed(()=> filesStore.order_id);
     const numberOfPapers = computed(() => {
-      return filesStore.files.reduce((total, file) => total + file.copies, 0);
+      return filesStore.files.reduce((total, file) => total + file.copies * file.pageCount, 0);
     });
 
 

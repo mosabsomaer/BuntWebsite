@@ -116,7 +116,22 @@
       border-radius: 50%;
       margin-right: 0.5rem;
     }
-    
+    .save-btnL {
+     background-color: #6366f1;
+      color: white;
+      padding: 10px 15px;
+      border:none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none; 
+      display: inline-block; 
+      text-align: center;
+      float: right;
+      margin-right: 70px;
+      margin-top: 20px;
+    }
     .completed .status-indicator {
       background-color: green;
     }
@@ -177,10 +192,12 @@
   }
   
   .status-item {
-    
     margin-bottom: 1rem;
   }
-  
+  .lastping{
+color: rgb(148, 148, 148);
+font-size: 15px;
+  }
   .status-item .status-bar-container {
     
     height: 10px;
@@ -196,9 +213,7 @@
     background-color: #6366f1;
   }
   
-  .status-item .status-bar.ink {
-    background-color: black;
-  }
+
   
   
   

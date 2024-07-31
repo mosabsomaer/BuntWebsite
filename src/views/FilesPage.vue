@@ -1,4 +1,8 @@
 <template>
+    <div>
+  <router-link :to="{ name: 'home' }" class="router-link">Home</router-link>
+  <router-link :to="{ name: 'FilesPages' }" class="router-link">Files</router-link>
+</div>
   <h1 style="text-align: center; font-weight: lighter">Your Files</h1>
   <div>
     <vue-good-table
@@ -75,7 +79,7 @@
   </div>
 
 
-  <div v-if="files.length" class="files-list">
+  <!-- <div v-if="files.length" class="files-list">
     <h3>Uploaded Files</h3>
     <ul>
       <li v-for="file in files" :key="file.id">
@@ -84,8 +88,7 @@
         </div>
       </li>
     </ul>
-    
-  </div>
+  </div> -->
 
  
 </template>

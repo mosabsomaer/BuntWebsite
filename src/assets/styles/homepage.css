@@ -224,3 +224,22 @@
   .faq-arrow.flipped {
     transform: rotate(180deg);
   }
+
+  .mgk {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .save-btnj {
+    background-color: #6366f1;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    text-align: center;
+  }

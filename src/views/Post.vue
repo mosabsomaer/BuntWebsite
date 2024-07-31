@@ -1,4 +1,5 @@
 <template>
+  <button @click="logout" class="save-btnL">Log Out</button>
   <div class="statistic-box">
     <div class="box">
       <p class="title">Today's Sale</p>
@@ -69,12 +70,13 @@
         <h2 class="status-heading">Status</h2>
         <div class="status-item">
           <span class="status-indicator active"></span>{{ status }}
+        <p class="lastping"> {{ formattedLastPing }}</p> 
         </div>
       </div>
       <div class="status-item">
         <div class="header-container">
           <p>papers</p>
-          <p>{{ paper }}</p>
+          <p>{{ paper }}%</p>
         </div>
         <div class="status-bar-container">
           <div class="status-bar" :style="{ width: `${paper}%` }"></div>
@@ -86,13 +88,13 @@
           <p>{{ ink }}%</p>
         </div>
         <div class="status-bar-container">
-          <div class="status-bar ink" :style="{ width: `${ink}%` }"></div>
+          <div class="status-bar" :style="{ width: `${ink}%` }"></div>
         </div>
       </div>
       <div class="status-item">
         <div class="header-container">
           <p>coin jar</p>
-          <p>{{ coins }} LYD</p>
+          <p>{{ coinsPercentage }} LYD</p>
         </div>
         <div class="status-bar-container">
           <div class="status-bar" :style="{ width: `${coins}%` }"></div>
@@ -105,8 +107,10 @@
 <script>
 import axiosInstance from "../services/AxiosTokenInstance";
 import { mapMutations } from "vuex";
+import axios from "axios";
 import { useFilesStore } from "@/stores/files";
 import { LOADING_SPINNER_SHOW_MUTATION } from "../store/storeconstants";
+import { formatDistanceToNow } from 'date-fns';
 import "@/assets/styles/Post.css";
 export default {
   data() {
@@ -119,13 +123,21 @@ export default {
       coins: null,
       status: null,
       last_ping: null,
+      coinsPercentage:null,
+      paperPercentage:null,
     };
   },
 
   computed: {
     latestPosts() {
       const length = this.posts.length;
+      
       return this.posts.slice(length - 4, length);
+    },
+    formattedLastPing() {
+      const currentTimestamp = Math.round(new Date().getTime() / 1000); 
+      const lastPingTimestamp = currentTimestamp - this.last_ping;
+      return formatDistanceToNow(new Date(lastPingTimestamp * 1000), { addSuffix: true });
     },
   },
   setup() {
@@ -135,7 +147,6 @@ export default {
     };
   },
   mounted() {
-    console.log("token:" + this.filesStore.token);
     this.showLoading(true);
     axiosInstance
       .get(this.filesStore.server_link + "/api/orders", {
@@ -160,11 +171,16 @@ export default {
       .then((response) => {
         this.stats = response.data;
         this.showLoading(false);
-        this.paper = this.stats.status.paper;
+        const maxPaper = 2000;
+        this.paperPercentage = this.stats.status.paper;
+        this.paper = (this.paperPercentage / maxPaper) * 100;
+        const maxCoins = 500;
+        this.coinsPercentage = this.stats.status.coins;
+        this.coins = (this.coinsPercentage / maxCoins) * 100;
         this.ink = this.stats.status.ink;
-        this.coins = this.stats.status.coins;
         this.status = this.stats.status.status;
         this.last_ping = this.stats.status.last_ping;
+        
       })
       .catch(() => {
         this.showLoading(false);
@@ -174,6 +190,20 @@ export default {
     ...mapMutations({
       showLoading: LOADING_SPINNER_SHOW_MUTATION,
     }),
+    logout() {
+      const jobResponse = axios.post(
+        useFilesStore().server_link + "/api/admins/logout",
+        {
+          token: this.token,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + this.token,
+          },
+        }
+      );
+      this.$router.push("/login");
+    },
   },
 };
 </script>
