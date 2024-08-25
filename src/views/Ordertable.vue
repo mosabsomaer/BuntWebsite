@@ -1,12 +1,16 @@
 <template>
   <div>
     <vue-good-table
-      ref="table"
       :columns="columns"
       :rows="orders"
-      compactMode
       styleClass="vgt-table striped custom-striped-table"
+      :pagination-options="{
+        enabled: true,
+        mode: 'records',
+      }"
+      :search-options="{ enabled: true,}"
     >
+  
     </vue-good-table>
   </div>
 </template>
@@ -16,6 +20,23 @@ import axiosInstance from "../services/AxiosTokenInstance";
 import { useFilesStore } from "@/stores/files";
 
 export default {
+  methods: {
+ 
+    deleteOrder(orderId) {
+      axiosInstance
+        .delete(this.filesStore.server_link + `/api/orders/${orderId}`, {
+          headers: {
+            Authorization: `Bearer ` + this.token,
+          },
+        })
+        .then(() => {
+          console.log(`Order with ID ${orderId} deleted successfully.`);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+  },
   setup() {
     const filesStore = useFilesStore();
     return {
@@ -28,6 +49,7 @@ export default {
         {
           label: "Order ID",
           field: "order_id",
+          sortable: false,
         },
         {
           label: "Status",
@@ -39,14 +61,18 @@ export default {
           type: "number",
         },
         {
-          label: 'Created At',
-          field: 'created_at',
-          type: 'date',
+          label: "Created On",
+          field: "created_at",
+          type: "date",
+          dateInputFormat: "yyyy-MM-dd",
+          dateOutputFormat: "MMM-do",
         },
         {
-          label: 'Updated At',
-          field: 'updated_at',
-          type: 'date',
+          label: "Last Update",
+          field: "updated_at",
+          type: "date",
+          dateInputFormat: "yyyy-MM-dd",
+          dateOutputFormat: "MMM-do",
         },
         {
           label: "Price",
@@ -60,6 +86,7 @@ export default {
         },
       ],
       orders: [],
+      selectedOrderId: null,
       token: localStorage.getItem("token"),
     };
   },
@@ -71,7 +98,13 @@ export default {
         },
       })
       .then((response) => {
-        this.orders = response.data.data;
+        this.orders = response.data.data.map((order) => {
+          return {
+            ...order,
+            created_at: new Date(order.created_at).toISOString().split("T")[0],
+            updated_at: new Date(order.updated_at).toISOString().split("T")[0],
+          };
+        });
       })
       .catch((error) => {
         console.error(error);

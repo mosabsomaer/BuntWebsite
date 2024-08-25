@@ -34,7 +34,8 @@
     <div class="table-container" style="float: left">
       <div class="header-container">
         <h2 class="order-heading">Orders</h2>
-        <a href="#" class="see-all-orders">See All Orders</a>
+       <router-link :to="{ name: 'ordertable' }" class="see-all-orders">See All Orders</router-link>
+
       </div>
       <table class="table">
         <thead>

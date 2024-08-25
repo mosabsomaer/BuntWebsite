@@ -192,11 +192,13 @@ async save() {
           label: "File Name",
           field: "name",
           type: "string",
+          sortable: false,
         },
         {
           label: "Color Mode",
           field: "colorMode",
           html: true,
+          sortable: false,
         },
         {
           label: "Copies",
@@ -207,11 +209,13 @@ async save() {
           label: "Price",
           field: "price",
           type: "number",
+
         },
         {
           label: "",
           field: "actions",
           html: true,
+          sortable: false,
         },
       ],
       deleteRow,
